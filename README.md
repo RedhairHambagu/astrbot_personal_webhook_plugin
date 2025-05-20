@@ -1,6 +1,6 @@
 # Uptime Kuma Webhook for AstrBot
 
-参考[https://github.com/Raven95676/astrbot_plugin_push_lite]开发，允许您通过 Webhook 从 Uptime Kuma 接收监控状态通知，并将这些通知推送到指定的 AstrBot 用户或群组。
+参考<https://github.com/Raven95676/astrbot_plugin_push_lite>开发，允许您通过 Webhook 从 Uptime Kuma 接收监控状态通知，并将这些通知推送到指定的 AstrBot 用户或群组。
 ## 功能
 
 -   通过一个可配置的 HTTP(S) 端点接收来自 Uptime Kuma 的 Webhook 通知。
