@@ -9,7 +9,7 @@ from astrbot.core.message.message_event_result import MessageChain
 
 from .api import run_server # type: ignore
 
-@register("uptime_kuma_webhook", "RC-CHN", "Uptime Kuma Webhook", "0.1.0") # 与 metadata.yaml 一致
+@register("astrbot_uptime_kuma_webhook_plugin", "RC-CHN", "通过 Webhook 接收 Uptime Kuma 的监控通知并推送到 AstrBot", "0.1.0") # 与 metadata.yaml 一致
 class UptimeKumaWebhook(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
