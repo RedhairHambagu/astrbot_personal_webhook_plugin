@@ -27,7 +27,8 @@
 保存配置后，插件会自动应用新的设置（可能需要重新启用插件或重启 AstrBot，具体取决于 AstrBot 的行为）。
 
 ## Uptime Kuma 设置
-
+![image](https://github.com/user-attachments/assets/2dc20b07-e090-4c4c-a8e2-6f5b60e82f95)
+范例如上图
 在 Uptime Kuma 中，为您的监控项添加或编辑通知设置：
 
 1.  **通知类型 (Notification Type):** 选择 `Webhook`。
