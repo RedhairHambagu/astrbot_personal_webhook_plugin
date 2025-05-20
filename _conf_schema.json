@@ -1,0 +1,36 @@
+{
+  "api": {
+    "description": "API 服务器相关设置",
+    "type": "object",
+    "items": {
+      "host": {
+        "description": "API主机",
+        "type": "string",
+        "default": "0.0.0.0",
+        "hint": "监听的host地址，如无必要默认即可"
+      },
+      "port": {
+        "description": "API端口",
+        "type": "int",
+        "default": 9967,
+        "hint": "监听的端口，如使用容器或云服务器部署，请注意添加安全组或端口转发"
+      },
+      "webhook_path": {
+        "description": "POST路径",
+        "type": "string",
+        "default": "/",
+        "hint": "Uptime Kuma 发送POST请求的路径，如无必要默认即可"
+      },
+      "token": {
+        "description": "鉴权Token",
+        "type": "string",
+        "hint": "用于验证来自 Uptime Kuma 的请求。在 Uptime Kuma 的 Webhook 设置中配置 Authorization 请求头 (例如: Bearer your_token_here)。必须提供此令牌。"
+      }
+    }
+  },
+  "target_umo": {
+    "description": "通知ID",
+    "type": "list",
+    "hint": "接收 Uptime Kuma 通知的用户或群组 ID ,可以使用/sid命令获取"
+  }
+}

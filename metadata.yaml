@@ -1,0 +1,6 @@
+id: uptime_kuma_webhook
+author: RC-CHN
+name: Uptime Kuma Webhook
+description: 通过 Webhook 接收 Uptime Kuma 的监控通知并推送到 AstrBot。
+version: 0.1.0
+
