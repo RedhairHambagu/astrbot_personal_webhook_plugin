@@ -9,8 +9,8 @@ from astrbot.core.message.message_event_result import MessageChain
 
 from .api import run_server # type: ignore
 
-@register("astrbot_uptime_kuma_webhook_plugin", "RC-CHN", "通过 Webhook 接收 Uptime Kuma 的监控通知并推送到 AstrBot", "0.1.0") # 与 metadata.yaml 一致
-class UptimeKumaWebhook(Star):
+@register("astrbot_personal_webhook_plugin", "RC-CHN", "通过 Webhook 接收   的监控通知并推送到 AstrBot", "0.1.0") # 与 metadata.yaml 一致
+class PersonalWebhook(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.config = config
@@ -27,7 +27,7 @@ class UptimeKumaWebhook(Star):
         if isinstance(target_umo_config, list) and target_umo_config:
             self.target_umos = target_umo_config
         else:
-            logger.error("Uptime Kuma Webhook: 配置中的 'target_umo' 不是一个有效的列表或为空，插件无法发送消息。")
+            logger.error("  Webhook: 配置中的 'target_umo' 不是一个有效的列表或为空，插件无法发送消息。")
             return
 
         host = api_conf.get("host", "0.0.0.0")
@@ -38,7 +38,7 @@ class UptimeKumaWebhook(Star):
         # self.target_umos 的检查已在上面完成
 
         if not token:
-            logger.error("Uptime Kuma Webhook: 配置中未找到 API 'token'，API 服务不会启动。请配置令牌以确保安全。")
+            logger.error("  Webhook: 配置中未找到 API 'token'，API 服务不会启动。请配置令牌以确保安全。")
             return
 
         self.in_queue = Queue()
@@ -56,12 +56,12 @@ class UptimeKumaWebhook(Star):
         self.process.start()
         self._running = True
         asyncio.create_task(self._process_messages())
-        logger.info("Uptime Kuma Webhook 插件已初始化并启动 API 服务。")
+        logger.info("  Webhook 插件已初始化并启动 API 服务。")
 
     async def _process_messages(self):
         """处理来自子进程的消息"""
         if not self.in_queue or not self.target_umos:
-            logger.error("Uptime Kuma Webhook: 消息队列或 target_umos 未初始化/为空，无法处理消息。")
+            logger.error("  Webhook: 消息队列或 target_umos 未初始化/为空，无法处理消息。")
             return
 
         while self._running:
@@ -76,30 +76,30 @@ class UptimeKumaWebhook(Star):
                     break
 
                 if isinstance(notification_msg, str):
-                    logger.info(f"正在处理 Uptime Kuma 消息: \"{notification_msg[:100]}...\"")
-                    prefixed_msg = f"[Uptime Kuma] {notification_msg}"
+                    logger.info(f"正在处理   消息: \"{notification_msg[:100]}...\"")
+                    prefixed_msg = f"[ ] {notification_msg}"
                     chain = MessageChain(chain=[Comp.Plain(prefixed_msg)])
                     for umo in self.target_umos:
                         try:
                             await self.context.send_message(umo, chain)
-                            logger.info(f"Uptime Kuma 消息已发送至 {umo}")
+                            logger.info(f"  消息已发送至 {umo}")
                         except Exception as send_error:
-                            logger.error(f"Uptime Kuma 消息发送至 {umo} 失败: {send_error}", exc_info=True)
+                            logger.error(f"  消息发送至 {umo} 失败: {send_error}", exc_info=True)
                 else:
                     logger.warning(f"从队列中收到意外的消息类型: {type(notification_msg)}")
 
             except EOFError: # 当队列的另一端关闭时，可能会发生这种情况
-                logger.info("Uptime Kuma Webhook: 消息队列已关闭。")
+                logger.info("  Webhook: 消息队列已关闭。")
                 self._running = False # 确保循环终止
                 break
             except Exception as e:
-                logger.error(f"Uptime Kuma Webhook: 处理消息时发生错误: {e}", exc_info=True)
+                logger.error(f"  Webhook: 处理消息时发生错误: {e}", exc_info=True)
                 # 根据错误类型决定是否继续循环
                 await asyncio.sleep(1) # 避免快速失败循环
 
     async def terminate(self):
         """停止插件"""
-        logger.info("正在终止 Uptime Kuma Webhook 插件...")
+        logger.info("正在终止   Webhook 插件...")
         self._running = False
         
         # 尝试向队列发送一个特殊值以唤醒 _process_messages 中的 get()
@@ -131,4 +131,4 @@ class UptimeKumaWebhook(Star):
             self.in_queue.close()
             self.in_queue.join_thread() # 等待后台线程完成
 
-        logger.info("Uptime Kuma Webhook 插件已终止。")
+        logger.info("  Webhook 插件已终止。")

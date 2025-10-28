@@ -4,7 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json, logging
 
 class KumaHandler(BaseHTTPRequestHandler):
-    # 只处理 POST（Uptime Kuma 默认用 POST 调用 Webhook）
+    # 只处理 POST（  默认用 POST 调用 Webhook）
     def do_POST(self):
         length = int(self.headers.get('Content-Length', 0))
         raw = self.rfile.read(length)

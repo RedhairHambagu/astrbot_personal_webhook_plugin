@@ -7,7 +7,7 @@ from hypercorn.config import Config as HypercornConfig
 
 from astrbot.api import logger # 假设 astrbot.api.logger 可用
 
-class UptimeKumaAPIServer:
+class PersonalAPIServer:
     def __init__(self, webhook_path: str, token: str | None, in_queue: Queue):
         self.app = Quart(__name__)
         self.webhook_path = webhook_path
@@ -63,27 +63,27 @@ class UptimeKumaAPIServer:
                     abort(400, description="JSON 负载中缺失 'msg' 字段")
                 
                 self.in_queue.put(str(notification_msg))
-                logger.info(f"来自 {request.remote_addr} 的 Uptime Kuma 消息已入队: \"{str(notification_msg)[:100]}...\"")
+                logger.info(f"来自 {request.remote_addr} 的   消息已入队: \"{str(notification_msg)[:100]}...\"")
                 
                 return jsonify({"status": "queued", "message_received": str(notification_msg)[:50]}), 200
 
             except Exception as e:
                 if hasattr(e, 'code') and isinstance(e.code, int) and e.code >= 400:
                     raise e 
-                logger.error(f"处理来自 {request.remote_addr} 的 Uptime Kuma webhook 时出错: {e}", exc_info=True)
+                logger.error(f"处理来自 {request.remote_addr} 的   webhook 时出错: {e}", exc_info=True)
                 abort(500, description="处理 webhook 时发生内部服务器错误。")
 
     async def start(self, host: str, port: int):
         """启动HTTP服务"""
         config = HypercornConfig()
         config.bind = [f"{host}:{port}"]
-        logger.info(f"Uptime Kuma Webhook 服务已启动于 http://{host}:{port}{self.webhook_path}")
+        logger.info(f"  Webhook 服务已启动于 http://{host}:{port}{self.webhook_path}")
         
         self._server_task = asyncio.create_task(serve(self.app, config))
         try:
             await self._server_task
         except asyncio.CancelledError:
-            logger.info("请求关闭 Uptime Kuma Webhook 服务")
+            logger.info("请求关闭   Webhook 服务")
         finally:
             await self.close()
 
@@ -94,10 +94,10 @@ class UptimeKumaAPIServer:
             try:
                 await self._server_task
             except asyncio.CancelledError:
-                logger.info("Uptime Kuma Webhook 服务已成功关闭。")
+                logger.info("  Webhook 服务已成功关闭。")
 
 
 def run_server(host: str, port: int, webhook_path: str, token: str | None, in_queue: Queue):
     """子进程入口"""
-    server = UptimeKumaAPIServer(webhook_path, token, in_queue)
+    server = PersonalAPIServer(webhook_path, token, in_queue)
     asyncio.run(server.start(host, port))

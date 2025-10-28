@@ -1,6 +1,6 @@
-id: astrbot_uptime_kuma_webhook_plugin
-author: RC-CHN
-name: astrbot_uptime_kuma_webhook_plugin
-description: 通过 Webhook 接收 Uptime Kuma 的监控通知并推送到 AstrBot。
+id: astrbot_personal_webhook_plugin
+author: xx
+name: astrbot_personal_webhook_plugin
+description: 通过 Webhook 接收   的监控通知并推送到 AstrBot。
 version: 0.1.0
-repo: https://github.com/RC-CHN/astrbot_uptime_kuma_webhook_plugin/
+repo: https://github.com/RedhairHambagu/astrbot_personal_webhook_plugin
