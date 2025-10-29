@@ -25,6 +25,12 @@
         "description": "鉴权Token",
         "type": "string",
         "hint": "用于验证来自   的请求。在   的 Webhook 设置中配置 Authorization 请求头 (例如: Bearer your_token_here)。必须提供此令牌。"
+      },
+      "prefix": {
+        "description": "消息前缀",
+        "type": "string",
+        "default": "",
+        "hint": "消息推送前缀，如无必要默认即可"
       }
     }
   },
