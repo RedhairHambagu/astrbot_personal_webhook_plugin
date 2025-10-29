@@ -16,7 +16,7 @@ class PersonalWebhook(Star):
         self.config = config
         self.in_queue: Queue | None = None
         self.process: Process | None = None
-        self.prefix_str = ''
+        self.prefix_str = 'BOT'
         self._running = False
         self.target_umos: list[str] = [] # 改为列表
 
@@ -36,6 +36,7 @@ class PersonalWebhook(Star):
         webhook_path = api_conf.get("webhook_path", "/")
         token = api_conf.get("token")
         self.prefix_str = api_conf.get("prefix_str")
+        logger.info(self.prefix_str)
 
         # self.target_umos 的检查已在上面完成
 
@@ -78,7 +79,7 @@ class PersonalWebhook(Star):
                     break
 
                 if isinstance(notification_msg, str):
-                    logger.info(f"正在处理   消息: \"{notification_msg[:100]}...\"")
+                    logger.info(f"正在处理{self.prefix_str}消息: \"{notification_msg[:100]}...\"")
                     prefixed_msg = f"[{self.prefix_str}] {notification_msg}"
                     chain = MessageChain(chain=[Comp.Plain(prefixed_msg)])
                     for umo in self.target_umos:
