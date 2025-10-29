@@ -9,7 +9,7 @@ from astrbot.core.message.message_event_result import MessageChain
 
 from .api import run_server # type: ignore
 
-@register("astrbot_personal_webhook_plugin", "RC-CHN", "通过 Webhook 接收   的监控通知并推送到 AstrBot", "0.1.0") # 与 metadata.yaml 一致
+@register("astrbot_personal_webhook_plugin", "RC-CHN", "通过 Webhook 接收监控通知并推送到 AstrBot", "0.1.1") # 与 metadata.yaml 一致
 class PersonalWebhook(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
@@ -35,8 +35,8 @@ class PersonalWebhook(Star):
         port = api_conf.get("port", 9967)
         webhook_path = api_conf.get("webhook_path", "/")
         token = api_conf.get("token")
-        self.prefix_str = api_conf.get("prefix_str")
-        logger.info(self.prefix_str)
+        self.prefix_str = self.config.get("prefix")
+        logger.info(f'self.prefix_str: {self.prefix_str}, self.config.get("prefix"):{self.config.get("prefix")}')
 
         # self.target_umos 的检查已在上面完成
 
